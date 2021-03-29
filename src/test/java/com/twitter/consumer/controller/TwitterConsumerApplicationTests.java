@@ -74,7 +74,6 @@ class TwitterConsumerApplicationTests {
      * Test 07 subscribe threshold.
      */
     @Test
-    @Disabled
     public void test07SubscribeThreshold() throws InterruptedException {
         TimeUnit.SECONDS.sleep(5);
         given().param("q", "acciona").param("lang", "es").param("followerThreshold", "2000").when().get(URL + "/stream").then().statusCode(200);

@@ -29,10 +29,10 @@ public class TwitterInstance {
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
         return cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("X")
-                .setOAuthConsumerSecret("X")
-                .setOAuthAccessToken("XX")
-                .setOAuthAccessTokenSecret("X").setJSONStoreEnabled(true);
+                .setOAuthConsumerKey("BFOEcG2PL5LSGU6mymY1juXHj")
+                .setOAuthConsumerSecret("rNoSE5RqT9FQWERe1a1fECaANIy0v4QEuHwIWqaOB84RvX952b")
+                .setOAuthAccessToken("229804422-woliWea1PoVyGMO4adSfni8grzc53j7Xicaz1BXX")
+                .setOAuthAccessTokenSecret("T9bTOwt7VNuPzfB39vrn8Rm73CRZGG3UEyVTIwS6SeKLf").setJSONStoreEnabled(true);
 
     }
 

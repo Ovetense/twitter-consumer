@@ -17,7 +17,7 @@ public interface TwitterBusiness {
      *
      * @return the all tweets
      */
-    Iterable<Tweet> getAllTweets();
+    List<Tweet> getAllTweets();
 
     /**
      * Gets tweets by user.
@@ -41,7 +41,15 @@ public interface TwitterBusiness {
      * @param id the id
      * @return the tweet by id
      */
-    Optional<Tweet> getTweetById(Long id);
+    Tweet getTweetById(Long id);
+
+    /**
+     * Toggles validated
+     *
+     * @param id the id
+     * @return the tweet by id
+     */
+    Tweet toggleValidate(Long id);
 
     /**
      * Save tweet.

@@ -13,13 +13,13 @@ public class Tweet extends RepresentationModel<Tweet> {
     @Id
     private Long id;
     @Column
-    public String location;
+    private String location;
     @Column
-    public String text;
+    private String text;
     @Column
-    public boolean validated;
+    private boolean validated;
     @Column
-    public String user;
+    private String user;
 
     /**
      * Instantiates a new Tweet.

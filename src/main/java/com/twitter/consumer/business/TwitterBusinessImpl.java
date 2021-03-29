@@ -27,7 +27,7 @@ public class TwitterBusinessImpl implements TwitterBusiness {
 
 
     @Override
-    public Iterable<Tweet> getAllTweets() {
+    public List<Tweet> getAllTweets() {
         return tweetRepository.findAll();
     }
 
@@ -42,8 +42,18 @@ public class TwitterBusinessImpl implements TwitterBusiness {
     }
 
     @Override
-    public Optional<Tweet> getTweetById(Long id) {
-        return tweetRepository.findById(id);
+    public Tweet getTweetById(Long id) {
+        return tweetRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Tweet toggleValidate(Long id) {
+        Optional<Tweet> toggledTweet = tweetRepository.findById(id);
+        return toggledTweet.map(tweet -> {
+            tweet.setValidated(!tweet.isValidated());
+            return save(tweet);
+        })
+                .orElseThrow();
     }
 
     @Override

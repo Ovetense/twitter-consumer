@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.twitter.consumer.controller.HateoasAssembler.assemblyLinks;
+import static com.twitter.consumer.controller.HateoasAssembler.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -43,19 +43,7 @@ public class TwitterRestController {
     @GetMapping("/tweets")
     CollectionModel<Tweet> getTweets() {
         Iterable<Tweet> tweets = twitterBusiness.getAllTweets();
-
-        for (final Tweet tweet : tweets) {
-            Link selfLink = linkTo(methodOn(TwitterRestController.class)
-                    .getTweetById(tweet.getId())).withSelfRel();
-            Link selfLink2 = linkTo(methodOn(TwitterRestController.class)
-                    .getTweetByUser(tweet.getUser())).withSelfRel();
-            tweet.add(selfLink, selfLink2);
-        }
-
-
-        Link link = linkTo(methodOn(TwitterRestController.class)
-                .getTweets()).withSelfRel();
-        return CollectionModel.of(tweets, link);
+        return assemblyItLink(tweets);
     }
 
 
@@ -91,9 +79,9 @@ public class TwitterRestController {
      */
     @GetMapping("/tweet/{id}")
     EntityModel<Tweet> getTweetById(@PathVariable Long id) {
-        Optional<Tweet> tweet = twitterBusiness.getTweetById(id);
-        tweet.get().add(linkTo(methodOn(TwitterRestController.class).getTweetById(tweet.get().getId())).withSelfRel());
-        return EntityModel.of(tweet.get(), linkTo(methodOn(TwitterRestController.class).getTweets()).withRel("tweets"));
+        Tweet tweet = twitterBusiness.getTweetById(id);
+        tweet.add(linkTo(methodOn(TwitterRestController.class).getTweetById(tweet.getId())).withSelfRel());
+        return assemblyLink(tweet);
     }
 
     /**
@@ -104,15 +92,11 @@ public class TwitterRestController {
      */
     @GetMapping("/toggleValidated/{id}")
     EntityModel<Tweet> markTweetAsValidated(@PathVariable Long id) {
-        Optional<Tweet> toggledTweet = twitterBusiness.getTweetById(id);
-        toggledTweet.map(tweet -> {
-            tweet.setValidated(!tweet.isValidated());
-            return twitterBusiness.save(tweet);
-        })
-                .orElseThrow();
-        toggledTweet.get().add(linkTo(methodOn(TwitterRestController.class).getTweetById(toggledTweet.get().getId())).withSelfRel());
-        return EntityModel.of(toggledTweet.get(), linkTo(methodOn(TwitterRestController.class).getTweets()).withRel("tweets"));
+        Tweet tweet = twitterBusiness.toggleValidate(id);
+        tweet.add(linkTo(methodOn(TwitterRestController.class).getTweetById(tweet.getId())).withSelfRel());
+        return assemblyLink(tweet);
     }
+
 
     /**
      * Mark tweet as validated hash map.
